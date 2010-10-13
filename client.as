@@ -1,0 +1,1 @@
+﻿package{ import flash.display.Sprite; import com.pblabs.engine.PBE; import com.pblabs.engine.debug.Logger; public class client extends Sprite {  public function client():void  {   PBE.startup(this);   Logger.print(this, "Hello, World!");  } }}
