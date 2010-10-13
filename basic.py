@@ -12,7 +12,7 @@ class Handler(webapp.RequestHandler):
 			if not(m):
 				m = Minefield(
 					author = user,
-					width = 10,
+					width = 20,
 					height = 10,
 				)
 			
@@ -39,8 +39,10 @@ class Handler(webapp.RequestHandler):
 			self.response.headers['Content-Type'] = 'text/plain'
 			self.response.out.write('Hello, %s\n' % user.nickname())
 			
-			self.response.out.write('======================\n')
+			sep = ''.join(['='] * m.width) + '\n'
+			
+			self.response.out.write(sep)
 			self.response.out.write(m.render())
-			self.response.out.write('======================\n')
+			self.response.out.write(sep)
 		else:
 			self.redirect(users.create_login_url(self.request.uri))

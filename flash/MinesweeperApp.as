@@ -1,21 +1,21 @@
 ﻿package {
-    import flash.display.MovieClip;
-    import flash.events.NetStatusEvent;
-    import flash.events.SecurityErrorEvent;
-    import flash.net.NetConnection;
+	import flash.display.MovieClip;
+	import flash.events.NetStatusEvent;
+	import flash.events.SecurityErrorEvent;
+	import flash.net.NetConnection;
 	import flash.net.Responder;
-
-    public class MinesweeperApp extends MovieClip {
+	
+	public class MinesweeperApp extends MovieClip {
 		private var nc:NetConnection = null;
 		
 		public function MinesweeperApp(){
 			trace('connecting');
 			this.nc = new NetConnection();
-			this.nc.addEventListener(NetStatusEvent.NET_STATUS, this.securityError);
-			this.nc.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.netStatus);
-			this.nc.connect("/amf");
+			this.nc.addEventListener(NetStatusEvent.NET_STATUS, this.netStatus);
+			this.nc.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.securityError);
+			this.nc.connect("http:/amf");
 		}
-
+		
 		public function securityError(event:SecurityErrorEvent):void {
 			trace("securityErrorHandler: " + event);
 		}
