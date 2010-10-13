@@ -13,7 +13,8 @@ class Handler(WebAppGateway):
 	
 	def render(self):
 		user = users.get_current_user()
-		m = Minefield.gql("WHERE author = :1", user).get()
+		#m = Minefield.gql("WHERE author = :1", user).get()
+		m = Minefield.gql("WHERE author = :1", 'blueradical@gmail.com').get()
 		if not(m):
 			m = Minefield(
 				author = user,
