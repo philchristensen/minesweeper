@@ -12,9 +12,8 @@ class Handler(WebAppGateway):
 		self.addService(self, name='minesweeper')
 	
 	def render(self):
-		user = users.get_current_user()
-		#m = Minefield.gql("WHERE author = :1", user).get()
-		m = Minefield.gql("WHERE author = :1", 'blueradical@gmail.com').get()
+		user = users.User('blueradical@gmail.com') #users.get_current_user()
+		m = Minefield.gql("WHERE author = :1", user).get()
 		if not(m):
 			m = Minefield(
 				author = user,
