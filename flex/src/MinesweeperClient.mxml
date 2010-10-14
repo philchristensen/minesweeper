@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="419" minHeight="260" width="715" height="484"
+			   creationComplete="init()">
+	<fx:Script><![CDATA[
+		import mx.controls.Alert;
+		import mx.core.IVisualElement;
+		
+		private var connection:NetConnection;
+		private var gateway:String = "http://localhost:8080/amf";
+		
+		private function init():void{
+			connection = new NetConnection();
+			connection.connect(gateway);
+			loadBoard();
+			tiles.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
+				var index:int = tiles.getElementIndex(e.target as IVisualElement);
+				var x:int = Math.floor(index / 20);
+				var y:int = index % 20;
+				if(e.altKey){
+					connection.call("minesweeper.mine", new Responder(onResult_render, onFault));
+				}
+				else{
+					connection.call("minesweeper.reveal", new Responder(onResult_render, onFault));
+				}
+			});
+		}
+		
+		//Load this function every action like create/update/remove, so that it gets all the contacts
+		private function loadBoard():void{
+			connection.call("minesweeper.render",
+				new Responder(onResult_render, onFault));
+		}
+		
+		private function onResult_render(data:Object):void {
+			var counter:int = 0;
+			var rows:Array = data.toString().split('\n');
+			for(var i:String in rows){
+				var row:String = rows[i];
+				var columns:Array = row.split('');
+				for(var j:String in columns){
+					var c:String = columns[j];
+					var field:Label = tiles.getChildAt(counter) as Label;
+					switch(c){
+						case '#':
+							break;
+						case '*':
+							field.text = c;
+							break;
+						case '0':
+							field.text = '';
+							break;
+						default:
+							field.text = c;
+							break;
+					}	
+					counter++;
+				}
+			}
+		}
+		
+		private function onFault(data:Object):void {
+			Alert.show( "Service Error" );
+		}
+	]]></fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TileGroup x="10" y="10" width="581" height="342" orientation="rows" requestedRowCount="10" requestedColumnCount="20" horizontalGap="1" verticalGap="1" id="tiles">
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+	</s:TileGroup>
+</s:Application>

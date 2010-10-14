@@ -25,7 +25,7 @@ class Minefield(db.Model):
 			return
 		self.mines.append(mine)
 	
-	def expose(self, x, y):
+	def reveal(self, x, y):
 		position = '%s,%s' % (x,y)
 		if(position in self.exposures):
 			return
@@ -53,7 +53,7 @@ class Minefield(db.Model):
 		
 		return state
 	
-	def isExposed(self, x, y):
+	def isRevealed(self, x, y):
 		if(self.finished):
 			return True
 		return '%s,%s' % (x,y) in self.exposures
@@ -62,7 +62,7 @@ class Minefield(db.Model):
 		output = ''
 		for row in range(self.height):
 			for col in range(self.width):
-				if(self.isExposed(row, col)):
+				if(self.isRevealed(row, col)):
 					state = self.getState(row, col)
 					if(state == -1):
 						output += '*'

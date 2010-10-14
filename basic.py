@@ -20,9 +20,9 @@ class Handler(webapp.RequestHandler):
 				x,y = [int(x) for x in point.split(',')]
 				m.mine(x, y)
 			
-			for point in self.request.get_all('expose'):
+			for point in self.request.get_all('reveal'):
 				x,y = [int(x) for x in point.split(',')]
-				m.expose(x, y)
+				m.reveal(x, y)
 				if(m.getState(x,y) == -1):
 					m.finished = True
 			

@@ -14,8 +14,8 @@ mailto:phil@bubblehouse.org
     - if clicking on a cell with no adjacent mines, additional cells are not (yet) uncovered
 * Created basic text frontend to test minefield
     - **mine=x,y** GET argument adds mine
-    - **expose=x,y** GET argument indicates a 'click'
-    - **hide=x,y** GET argument re-hides an exposed cell
+    - **reveal=x,y** GET argument indicates a 'click'
+    - **hide=x,y** GET argument re-hides an reveald cell
     - **finished=(0|1)** GET argument toggles finished state
 * Created preliminary AMF resource
 * Created test AMF client script
