@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="419" minHeight="260" width="715" height="484"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="419" minHeight="260" width="539" height="340"
 			   creationComplete="init()">
 	<fx:Script><![CDATA[
 		import mx.controls.Alert;
@@ -14,23 +14,37 @@
 			connection = new NetConnection();
 			connection.connect(gateway);
 			loadBoard();
-			tiles.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
-				var index:int = tiles.getElementIndex(e.target as IVisualElement);
-				var x:int = Math.floor(index / 20);
-				var y:int = index % 20;
-				if(e.altKey){
-					connection.call("minesweeper.mine", new Responder(onResult_render, onFault));
-				}
-				else{
-					connection.call("minesweeper.reveal", new Responder(onResult_render, onFault));
-				}
-			});
 		}
 		
-		//Load this function every action like create/update/remove, so that it gets all the contacts
 		private function loadBoard():void{
-			connection.call("minesweeper.render",
-				new Responder(onResult_render, onFault));
+			connection.call("minesweeper.authorized", new Responder(onResult_authorized, onFault));
+		}
+
+		private function onResult_authorized(data:Object):void {
+			if(! data){
+				navigateToURL(new URLRequest('/login'),'_self')
+			}
+			tiles.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
+				var element:IVisualElement = e.target as IVisualElement;
+				if(element is Label){
+					var index:int = tiles.getElementIndex(element);
+					var x:int = Math.floor(index / 20);
+					var y:int = index % 20;
+					if(e.altKey){
+						connection.call("minesweeper.mine", new Responder(onResult_render, onFault), x, y);
+					}
+					else{
+						connection.call("minesweeper.reveal", new Responder(onResult_render, onFault), x, y);
+					}
+				}
+			});
+			reset_btn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
+				connection.call("minesweeper.reset", new Responder(onResult_render, onFault));
+			});
+			giveup_btn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
+				connection.call("minesweeper.giveup", new Responder(onResult_render, onFault));
+			});
+			connection.call("minesweeper.render", new Responder(onResult_render, onFault));
 		}
 		
 		private function onResult_render(data:Object):void {
@@ -61,13 +75,13 @@
 		}
 		
 		private function onFault(data:Object):void {
-			Alert.show( "Service Error" );
+			Alert.show(data.code + ': ' + data.description );
 		}
 	]]></fx:Script>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<s:TileGroup x="10" y="10" width="581" height="342" orientation="rows" requestedRowCount="10" requestedColumnCount="20" horizontalGap="1" verticalGap="1" id="tiles">
+	<s:TileGroup x="10" y="10" width="520" height="286" orientation="rows" requestedRowCount="10" requestedColumnCount="20" horizontalGap="1" verticalGap="1" id="tiles">
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
@@ -289,4 +303,6 @@
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
 	</s:TileGroup>
+	<s:Button x="105" y="310" label="Reset" id="reset_btn" enabled="true"/>
+	<s:Button x="374" y="309" label="Give Up" id="giveup_btn" enabled="true"/>
 </s:Application>

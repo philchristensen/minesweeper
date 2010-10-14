@@ -37,6 +37,10 @@ class Minefield(db.Model):
 			return
 		self.exposures.remove(position)
 	
+	def reset(self):
+		self.exposures = []
+		self.finished = False
+	
 	def getState(self, x, y):
 		position = '%s,%s' % (x,y)
 		if(position in self.mines):

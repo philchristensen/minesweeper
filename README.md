@@ -25,3 +25,10 @@ mailto:phil@bubblehouse.org
 * Created CS5-based Flash movie, external ActionScript definition
     - Not yet connecting to server, for some reason.
 * Other changes and revisions
+
+10/14/2010
+----------
+* Switched to using Flex with FlashBuilder for front-end
+* Implemented clicking for reveal, option-clicking for set mine
+* Added buttons to reset the game (but not the mines), and give up (display the whole board)
+	- Reset button doesn't seem to work until manual refresh

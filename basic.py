@@ -3,6 +3,14 @@ from google.appengine.ext import webapp
 
 from model import Minefield
 
+class LoginHandler(webapp.RequestHandler):
+	def get(self):
+		user = users.get_current_user()
+		if(user):
+			self.redirect('/flex/bin-debug/MinesweeperClient.html')
+		else:
+			self.redirect(users.create_login_url(self.request.uri))
+
 class Handler(webapp.RequestHandler):
 	def get(self):
 		user = users.get_current_user()
