@@ -8,7 +8,7 @@
 		import mx.core.IVisualElement;
 		
 		private var connection:NetConnection;
-		private var gateway:String = "http://minesweeperphil.appspot.com/amf";
+		private var gateway:String = "http://localhost:8080/amf"; //"http://minesweeperphil.appspot.com/amf";
 		
 		private function init():void{
 			connection = new NetConnection();
@@ -52,12 +52,16 @@
 			var rows:Array = data.toString().split('\n');
 			for(var i:String in rows){
 				var row:String = rows[i];
+				if(! row){
+					continue;
+				}
 				var columns:Array = row.split('');
 				for(var j:String in columns){
 					var c:String = columns[j];
 					var field:Label = tiles.getChildAt(counter) as Label;
 					switch(c){
 						case '#':
+							field.text = '#';
 							break;
 						case '*':
 							field.text = c;
@@ -81,27 +85,7 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<s:TileGroup x="10" y="10" width="520" height="286" orientation="rows" requestedRowCount="10" requestedColumnCount="20" horizontalGap="1" verticalGap="1" id="tiles">
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
-		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
+	<s:TileGroup x="10" y="10" width="520" height="261" orientation="rows" requestedRowCount="10" requestedColumnCount="20" horizontalGap="1" verticalGap="1" id="tiles">
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
@@ -303,6 +287,6 @@
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
 		<s:Label paddingLeft="5" paddingTop="5" paddingRight="0" paddingBottom="0" width="25" height="25" backgroundColor="#C8C8C8"/>
 	</s:TileGroup>
-	<s:Button x="105" y="310" label="Reset" id="reset_btn" enabled="true"/>
-	<s:Button x="374" y="309" label="Give Up" id="giveup_btn" enabled="true"/>
+	<s:Button x="101" y="293" label="Reset" id="reset_btn" enabled="true"/>
+	<s:Button x="370" y="292" label="Give Up" id="giveup_btn" enabled="true"/>
 </s:Application>

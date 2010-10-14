@@ -16,8 +16,6 @@ class Handler(WebAppGateway):
 		if not(m):
 			m = Minefield(
 				author = user,
-				width = 10,
-				height = 10,
 			)
 			m.put()
 		return m

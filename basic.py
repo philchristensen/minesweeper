@@ -20,8 +20,6 @@ class Handler(webapp.RequestHandler):
 			if not(m):
 				m = Minefield(
 					author = user,
-					width = 20,
-					height = 10,
 				)
 			
 			for point in self.request.get_all('mine'):

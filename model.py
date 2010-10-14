@@ -13,26 +13,26 @@ adjacent = lambda x, y: [
 
 class Minefield(db.Model):
 	author = db.UserProperty(required=True)
-	width = db.IntegerProperty(required=True)
-	height = db.IntegerProperty(required=True)
+	width = db.IntegerProperty(default=20)
+	height = db.IntegerProperty(default=10)
 	mines = db.StringListProperty(default=[])
 	exposures = db.StringListProperty(default=[])
 	finished = db.BooleanProperty(default=False)
 	
 	def mine(self, x, y):
-		mine = '%s,%s' % (x,y)
+		mine = u'%s,%s' % (x,y)
 		if(mine in self.mines):
 			return
 		self.mines.append(mine)
 	
 	def reveal(self, x, y):
-		position = '%s,%s' % (x,y)
+		position = u'%s,%s' % (x,y)
 		if(position in self.exposures):
 			return
 		self.exposures.append(position)
 	
 	def hide(self, x, y):
-		position = '%s,%s' % (x,y)
+		position = u'%s,%s' % (x,y)
 		if(position not in self.exposures):
 			return
 		self.exposures.remove(position)
@@ -42,17 +42,17 @@ class Minefield(db.Model):
 		self.finished = False
 	
 	def getState(self, x, y):
-		position = '%s,%s' % (x,y)
+		position = u'%s,%s' % (x,y)
 		if(position in self.mines):
 			return -1
-		
+		import logging
 		state = 0
 		for point in adjacent(x,y):
-			if not(-1 < point[0] < self.width):
+			if not(-1 < point[0] < self.height):
 				continue
-			elif not(-1 < point[1] < self.height):
+			elif not(-1 < point[1] < self.width):
 				continue
-			elif('%s,%s' % point in self.mines):
+			elif(u'%s,%s' % point in self.mines):
 				state += 1
 		
 		return state
@@ -60,7 +60,7 @@ class Minefield(db.Model):
 	def isRevealed(self, x, y):
 		if(self.finished):
 			return True
-		return '%s,%s' % (x,y) in self.exposures
+		return u'%s,%s' % (x,y) in self.exposures
 	
 	def render(self):
 		output = ''
