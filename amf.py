@@ -29,6 +29,12 @@ class Handler(WebAppGateway):
 		m.put()
 		return m.render()
 	
+	def clear(self):
+		m = self.getMinefield()
+		m.clear()
+		m.put()
+		return m.render()
+	
 	def giveup(self):
 		m = self.getMinefield()
 		m.finished = True
