@@ -31,3 +31,7 @@ mailto:phil@bubblehouse.org
 * Switched to using Flex with FlashBuilder for front-end
 * Implemented clicking for reveal, option-clicking for set mine
 * Added buttons to reset the game (but not the mines), and give up (display the whole board)
+
+10/15/2010
+----------
+* Added 'clear' amf method to reset mines, various style tweaks and polish
