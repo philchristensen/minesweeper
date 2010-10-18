@@ -7,31 +7,29 @@ by Phil Christensen
 
 mailto:phil@bubblehouse.org
 
-10/12/2010
--------------
-* Created AppEngine-powered model to represent minefield, handle state changes
-    - current minefield is tied to the Google ID of the user
-    - if clicking on a cell with no adjacent mines, additional cells are not (yet) uncovered
-* Created basic text frontend to test minefield
-    - **mine=x,y** GET argument adds mine
-    - **reveal=x,y** GET argument indicates a 'click'
-    - **hide=x,y** GET argument re-hides an reveald cell
-    - **finished=(0|1)** GET argument toggles finished state
-* Created preliminary AMF resource
-* Created test AMF client script
+A Minesweeper clone written in Flex with a Google AppEngine back-end.
 
-10/13/2010
-----------
-* Created CS5-based Flash movie, external ActionScript definition
-    - Not yet connecting to server, for some reason.
-* Other changes and revisions
+Usage
+-----
 
-10/14/2010
-----------
-* Switched to using Flex with FlashBuilder for front-end
-* Implemented clicking for reveal, option-clicking for set mine
-* Added buttons to reset the game (but not the mines), and give up (display the whole board)
+On first connect, you'll need to log in to your Google account. Your minefield
+is assosicated with that account.
 
-10/15/2010
-----------
-* Added 'clear' amf method to reset mines, various style tweaks and polish
+Option (alt) click to set mines in your initially empty minefield. Since the
+field is covered, you won't see anything appear. To make creating an initial
+minefield easier, click "Reveal Minefield".
+
+When you're done, click "Replay Game" to hide your minefield again. Clicking
+field squares will expose either the mine or the number of adjacent mines,
+like the original game.
+
+To start over, click "Reset Mines" to reset to an empty minefield.
+
+Notes
+-----
+
+Due to time constraints, I didn't finish the following items:
+
+* Unlike the original, this version doesn't reveal the rest of the empty cells when you click on a cell with no adjacent cells.
+* Minefield data is saved directly in the Google datastore without caching, so things can be a little slow.
+* Game interface is implemented in standard Flex components, not PushButtonEngine sprites.

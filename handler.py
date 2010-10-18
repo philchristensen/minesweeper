@@ -2,7 +2,7 @@ from google.appengine.ext import webapp
 
 import basic, amf
 
-application = webapp.WSGIApplication([('/', basic.Handler), ('/login', basic.LoginHandler), ('/amf', amf.Handler)], debug=True)
+application = webapp.WSGIApplication([('/', basic.Handler), ('/login', amf.LoginHandler), ('/amf', amf.Handler)], debug=True)
 
 def main():
 	from google.appengine.ext.webapp.util import run_wsgi_app
